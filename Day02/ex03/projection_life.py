@@ -3,16 +3,18 @@ import matplotlib.pyplot as plt
 
 
 def main():
-    certified_42 = "income_per_person_gdppercapita_ppp_inflation_adjusted.csv"
-    income_data = load(certified_42)
+    """Plot the life expectancy against income per person for the year 1900."""
+    path = "income_per_person_gdppercapita_ppp_inflation_adjusted.csv"
+    income_data = load(path)
     life_expectancy_data = load("life_expectancy_years.csv")
-    year_1900_column = '1900'
-    gnp_1900 = income_data[year_1900_column]
-    life_expectancy_1900 = life_expectancy_data[year_1900_column]
+    year = "1900"
+    income = income_data[year]
+    life_expectancy = life_expectancy_data[year]
 
     plt.figure(figsize=(10, 6))
-    plt.scatter(gnp_1900, life_expectancy_1900)
-    plt.title("Life expectancy vs Gross domestic product (Year 1900)")
+    plt.scatter(income, life_expectancy)
+    plt.title("Life expectancy vs Gross domestic product (Year {})"
+              .format(year))
     plt.xlabel("Gross domestic product")
     plt.ylabel("Life expectancy (Years)")
     plt.xscale("log")

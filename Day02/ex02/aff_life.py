@@ -3,18 +3,9 @@ import matplotlib.pyplot as plt
 
 
 def preprocess_population(pop_str):
-    """
-    Preprocesses the population string to convert it into
-    a numeric value in standard form.
-
-    Args:
-        pop_str (str): Population string with or without
-        the 'M' suffix for million.
-
-    Returns:
-        float: Numeric population value.
-    """
-    if pop_str.endswith("M"):
+    if pop_str == "B":
+        return float(pop_str[:-1]) * 1e9
+    elif pop_str.endswith("M"):
         return float(pop_str[:-1]) * 1e6
     elif pop_str.endswith("k"):
         return float(pop_str[:-1]) * 1e3
@@ -23,37 +14,33 @@ def preprocess_population(pop_str):
 
 
 def main():
+    """Plot the population over time for Belgium and France."""
     data = load("population_total.csv")
 
-    campus = "Germany"
-    country = "France"
-    home = "Hungary"
+    c1 = "Belgium"
+    c2 = "France"
 
-    germany_data = data[data['country'] == campus].iloc[:, 1:]
-    france_data = data[data['country'] == country].iloc[:, 1:]
-    hungary_data = data[data['country'] == home].iloc[:, 1:]
+    c1_data = data[data['country'] == c1].iloc[:, 1:]
+    c2_data = data[data['country'] == c2].iloc[:, 1:]
 
-    germany_pop = germany_data.values.flatten()
-    france_pop = france_data.values.flatten()
-    hungary_pop = hungary_data.values.flatten()
-    years = germany_data.columns.astype(int)
+    c1_pop = c1_data.values.flatten()
+    c2_pop = c2_data.values.flatten()
+    years = c1_data.columns.astype(int)
 
-    germany_pop = [preprocess_population(pop) for pop in germany_pop]
-    france_pop = [preprocess_population(pop) for pop in france_pop]
-    hungary_pop = [preprocess_population(pop) for pop in hungary_pop]
+    c1_pop = [preprocess_population(pop) for pop in c1_pop]
+    c2_pop = [preprocess_population(pop) for pop in c2_pop]
 
-    plt.plot(years, germany_pop, label=campus)
-    plt.plot(years, france_pop, label=country)
-    plt.plot(years, hungary_pop, label=home)
+    plt.plot(years, c1_pop, label=c1)
+    plt.plot(years, c2_pop, label=c2)
 
-    plt.title("Population in {}, {} and {}".format(campus, country, home))
+    plt.title("Population in {} and {}".format(c1, c2))
     plt.xlabel("Year")
     plt.xticks(range(1800, 2051, 40), range(1800, 2051, 40))
     plt.xlim(1800, 2040)
     plt.ylabel("Population")
     plt.legend()
     plt.tight_layout()
-    max_pop = max(max(germany_pop), max(france_pop), max(hungary_pop))
+    max_pop = max(max(c1_pop), max(c2_pop))
     y_ticks = [i * 1e7 for i in range(int(max_pop / 1e7) + 1)]
     plt.yticks(y_ticks, ["{:,.0f}M".format(pop / 1e6) for pop in y_ticks])
     plt.show()

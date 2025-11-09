@@ -1,3 +1,10 @@
 from load_csv import load
 
-print(load("life_expectancy_years.csv"))
+
+def main():
+    """Main function to load a csv file."""
+    print(load("life_expectancy_yars.csv"))
+
+
+if __name__ == "__main__":
+    main()
