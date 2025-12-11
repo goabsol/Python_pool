@@ -1,12 +1,21 @@
 import random
 import string
-
 from dataclasses import dataclass, field
+
+
 def generate_id() -> str:
-    return "".join(random.choices(string.ascii_lowercase, k = 15))
+    """
+    Generates a random 15-character lowercase string ID.
+    """
+    return "".join(random.choices(string.ascii_lowercase,
+                                  k=15))
+
 
 @dataclass
 class Student:
+    """
+    Dataclass representing a student with automatic login and ID generation.
+    """
     name: str
     surname: str
     active: bool = True
@@ -14,7 +23,6 @@ class Student:
     id: str = field(default_factory=generate_id)
 
     def __post_init__(self) -> None:
-        # Build login from name and surname safely (handle empty/whitespace)
         name = (self.name or "").strip()
         surname = (self.surname or "").strip()
         if name and surname:
@@ -24,6 +32,6 @@ class Student:
 
     def __str__(self) -> str:
         return (
-            f"Student(name={self.name}, surname={self.surname}, active={self.active}, "
-            f"login={self.login}, id={self.id})"
+            f"Student(name={self.name}, surname={self.surname}, "
+            f"active={self.active}, login={self.login}, id={self.id})"
         )
