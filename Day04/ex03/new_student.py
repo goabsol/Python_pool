@@ -29,9 +29,3 @@ class Student:
             self.login = name[0].upper() + surname.lower()
         else:
             self.login = ""
-
-    def __str__(self) -> str:
-        return (
-            f"Student(name={self.name}, surname={self.surname}, "
-            f"active={self.active}, login={self.login}, id={self.id})"
-        )
